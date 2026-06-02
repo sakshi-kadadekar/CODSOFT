@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Face Detection and Recognition</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">RetinaFace + ArcFace</p>
+          <h1>Face Detection and Recognition</h1>
+          <p class="lede">Upload an image, detect faces, recognize known people, and inspect confidence scores from a fully local embedding pipeline.</p>
+        </div>
+        <div class="status {{ 'ready' if model_ready else 'waiting' }}">
+          <span></span>
+          {{ "ArcFace embeddings ready" if model_ready else "Recognition model not trained" }}
+        </div>
+      </section>
+
+      {% if error %}
+        <div class="notice error">{{ error }}</div>
+      {% endif %}
+      {% if message %}
+        <div class="notice success">{{ message }}</div>
+      {% endif %}
+
+      <section class="workspace">
+        <form class="panel upload-panel" action="/process" method="post" enctype="multipart/form-data">
+          <div class="panel-head">
+            <h2>Image Upload</h2>
+            <p>Select an image and choose detection or recognition.</p>
+          </div>
+
+          <label class="file-picker">
+            <input type="file" name="image" accept="image/*" required>
+            <span>Choose image</span>
+          </label>
+
+          <div class="mode-row">
+            <label>
+              <input type="radio" name="mode" value="detect" {% if selected_mode != 'recognize' %}checked{% endif %}>
+              Detect
+            </label>
+            <label>
+              <input type="radio" name="mode" value="recognize" {% if selected_mode == 'recognize' %}checked{% endif %}>
+              Recognize
+            </label>
+          </div>
+
+          {% include "thresholds.html" %}
+          <button type="submit">Process Image</button>
+        </form>
+
+        <section class="panel camera-panel">
+          <div class="panel-head">
+            <h2>Camera Capture</h2>
+            <p>Capture one browser-camera frame and process it with the same thresholds.</p>
+          </div>
+          <video id="camera" autoplay playsinline muted></video>
+          <div class="button-row">
+            <button id="startCamera" type="button">Start Camera</button>
+            <button id="captureFrame" type="button">Capture</button>
+          </div>
+        </section>
+
+        <section class="panel train-panel">
+          <div class="panel-head">
+            <h2>Train And Evaluate</h2>
+            <p>Use dataset/person_name/photo.jpg with 15-30 varied images per person.</p>
+          </div>
+          {% if people %}
+            <div class="people">
+              {% for person in people %}
+                <span>{{ person }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="muted">No dataset folders found yet.</p>
+          {% endif %}
+          <form action="/train" method="post">
+            {% include "hidden_thresholds.html" %}
+            <button type="submit">Train Embeddings</button>
+          </form>
+          <form action="/evaluate" method="post">
+            {% include "hidden_thresholds.html" %}
+            <button class="secondary" type="submit">Evaluate</button>
+          </form>
+        </section>
+      </section>
+
+      <section class="result-area">
+        <div class="result-copy">
+          <h2>Result</h2>
+          <p id="resultText">
+            {% if face_count is defined %}
+              Faces found: {{ face_count }}
+            {% else %}
+              Processed images and metadata appear here.
+            {% endif %}
+          </p>
+        </div>
+        {% if image_url %}
+          <img id="resultImage" src="{{ image_url }}" alt="Processed face result">
+        {% else %}
+          <img id="resultImage" class="hidden" alt="Processed face result">
+          <div id="emptyState" class="empty-state">No image processed yet</div>
+        {% endif %}
+
+        <div id="faceList" class="face-list">
+          {% if faces %}
+            {% for face in faces %}
+              <article class="face-row">
+                <strong>{{ face.identity }}</strong>
+                <span>Detection {{ face.detection_score }}</span>
+                {% if face.similarity is not none %}
+                  <span>Similarity {{ face.similarity }}</span>
+                  <div class="bar"><i style="width: {{ (face.similarity * 100) | round }}%"></i></div>
+                {% endif %}
+              </article>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </section>
+
+      {% if report %}
+        <section class="result-area">
+          <h2>Evaluation</h2>
+          <div class="metrics-grid">
+            {% for name, row in report.per_identity.items() %}
+              <article class="metric">
+                <strong>{{ name }}</strong>
+                <span>Precision {{ row.precision }}</span>
+                <span>Recall {{ row.recall }}</span>
+                <span>F1 {{ row.f1 }}</span>
+              </article>
+            {% endfor %}
+          </div>
+        </section>
+      {% endif %}
+    </main>
+    <canvas id="snapshot" class="hidden"></canvas>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>

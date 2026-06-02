@@ -1,0 +1,242 @@
+export type Domain = "movies" | "books" | "products";
+
+export interface Item {
+  id: string;
+  domain: Domain;
+  title: string;
+  creator: string; // director, author, brand
+  description: string;
+  tags: string[];
+  rating: number; // 0-5
+  year?: number;
+  price?: number;
+  gradient: [string, string];
+  emoji: string;
+}
+
+const G = {
+  indigo: ["#4f46e5", "#0a0a1a"] as [string, string],
+  teal: ["#0d9488", "#0c2340"] as [string, string],
+  rose: ["#e11d48", "#1a0a14"] as [string, string],
+  amber: ["#f59e0b", "#1a1208"] as [string, string],
+  emerald: ["#10b981", "#062019"] as [string, string],
+  violet: ["#8b5cf6", "#160a2e"] as [string, string],
+  sky: ["#0ea5e9", "#08243a"] as [string, string],
+  fuchsia: ["#d946ef", "#260a26"] as [string, string],
+  slate: ["#475569", "#0f172a"] as [string, string],
+  orange: ["#ea580c", "#1a0a05"] as [string, string],
+};
+const gradients = Object.values(G);
+const emojis = ["🎬", "🎞️", "📽️", "🎭", "🌌", "🗡️", "🚀", "💫", "🌊", "🔥"];
+const bookEmojis = ["📚", "📖", "📕", "📗", "📘", "📙", "📓", "🪶", "🗝️", "🧭"];
+const productEmojis = ["🎧", "⌚", "📱", "💻", "🪑", "💡", "📷", "🎮", "👟", "🧴"];
+
+function pick<T>(arr: T[], seed: number): T {
+  return arr[seed % arr.length];
+}
+
+export const movies: Item[] = [
+  ["Neon Drift", "Ava Mori", ["Sci-Fi", "Action"], 4.6, 2023],
+  ["The Quiet Coast", "Liam Park", ["Drama", "Romance"], 4.2, 2021],
+  ["Paper Cities", "Ines Vidal", ["Drama", "Indie"], 4.4, 2022],
+  ["Last Light Over Tokyo", "K. Saito", ["Drama", "Mystery"], 4.7, 2024],
+  ["Cobalt Hours", "Mara Reyes", ["Thriller", "Mystery"], 4.1, 2020],
+  ["Helios", "Dario Conte", ["Sci-Fi", "Adventure"], 4.5, 2023],
+  ["Slow Train Home", "Nora Bloom", ["Drama", "Romance"], 3.9, 2019],
+  ["Glassworks", "Owen Reid", ["Documentary"], 4.3, 2022],
+  ["The Cartographer", "Hana Suzuki", ["Adventure", "Drama"], 4.0, 2018],
+  ["Static Bloom", "P. Larsen", ["Sci-Fi", "Horror"], 4.2, 2024],
+  ["Marigold", "Renee Otieno", ["Romance", "Comedy"], 4.0, 2021],
+  ["Salt & Iron", "Jude Park", ["Action", "Thriller"], 4.4, 2022],
+  ["Vesper Hours", "Eloise Tang", ["Mystery", "Drama"], 4.6, 2023],
+  ["Northwind", "Karl Holm", ["Adventure", "Drama"], 4.1, 2020],
+  ["Echo Park", "Sofia Liu", ["Comedy", "Indie"], 3.8, 2019],
+  ["The Lantern Code", "M. Abebe", ["Thriller", "Mystery"], 4.5, 2024],
+  ["Polaris", "Yara Khan", ["Sci-Fi", "Drama"], 4.8, 2024],
+  ["Ghost Orchard", "T. Ramos", ["Horror", "Mystery"], 3.9, 2022],
+  ["Sunday Drivers", "Kira Park", ["Comedy", "Romance"], 4.0, 2021],
+  ["Iron Garden", "Hugo Vey", ["Drama", "War"], 4.5, 2020],
+  ["Riverbed", "Anita Cho", ["Drama", "Indie"], 4.2, 2023],
+  ["Phantom Frequency", "Leo Marks", ["Sci-Fi", "Horror"], 4.0, 2022],
+  ["The Bright Hour", "Eve Hwang", ["Romance", "Drama"], 4.3, 2024],
+  ["Trapezoid", "C. Becker", ["Thriller", "Action"], 3.9, 2021],
+  ["Hollow Crown Pass", "F. Okafor", ["Adventure", "Fantasy"], 4.4, 2023],
+  ["Saltwater Kingdom", "Mira Vance", ["Fantasy", "Drama"], 4.6, 2024],
+  ["Concrete Lullaby", "J. Ortiz", ["Drama", "Crime"], 4.1, 2020],
+  ["The Apiary", "Beatrice Sun", ["Documentary"], 4.5, 2022],
+  ["Velvet Static", "Alec Roman", ["Sci-Fi", "Romance"], 4.0, 2024],
+  ["Midnight Train", "Sami Yusuf", ["Drama", "Mystery"], 4.4, 2018],
+  ["The Open Door", "Pia Engel", ["Drama", "Romance"], 4.2, 2022],
+  ["Greenhouse", "Jules Marin", ["Indie", "Comedy"], 3.8, 2019],
+  ["Borealis", "K. Lindqvist", ["Adventure", "Sci-Fi"], 4.7, 2024],
+  ["Halfway House", "Tia Brooks", ["Drama", "Crime"], 4.0, 2021],
+  ["Honey & Smoke", "R. Bellini", ["Romance", "Drama"], 4.1, 2020],
+  ["Ironwood", "Ada Sterling", ["Fantasy", "Adventure"], 4.5, 2023],
+  ["Static Bloom 2", "P. Larsen", ["Sci-Fi", "Horror"], 4.0, 2025],
+  ["The Cartographer 2", "Hana Suzuki", ["Adventure", "Drama"], 4.2, 2024],
+  ["Cinder", "Mae Holt", ["Thriller", "Drama"], 4.3, 2022],
+  ["Lighthouse 88", "Yann Petit", ["Drama", "Mystery"], 4.4, 2023],
+  ["Underglass", "Nia Park", ["Sci-Fi", "Drama"], 4.6, 2024],
+  ["Paper Boats", "S. Wei", ["Indie", "Romance"], 3.9, 2018],
+  ["Trace Elements", "Omar Diaz", ["Thriller", "Sci-Fi"], 4.2, 2022],
+  ["The Quiet Year", "L. Kovac", ["Drama", "War"], 4.5, 2021],
+  ["Slate", "B. Cohen", ["Crime", "Drama"], 4.0, 2020],
+  ["Solstice Run", "Riya Anand", ["Action", "Adventure"], 4.3, 2023],
+  ["The Long Dark", "F. Mendel", ["Horror", "Mystery"], 4.1, 2024],
+  ["After Glow", "Cleo Sant", ["Romance", "Indie"], 4.4, 2022],
+  ["Hexagon", "M. Salah", ["Sci-Fi", "Thriller"], 4.2, 2023],
+  ["Wildflower County", "T. Brennan", ["Drama", "Romance"], 4.3, 2021],
+  ["Open Sea", "I. Romero", ["Adventure", "Drama"], 4.5, 2024],
+].map(([title, creator, tags, rating, year], i): Item => ({
+  id: `m-${i + 1}`,
+  domain: "movies",
+  title: title as string,
+  creator: creator as string,
+  description: `${title} — a ${(tags as string[])[0].toLowerCase()} ${(tags as string[])[1]?.toLowerCase() ?? "story"} that lingers long after the credits.`,
+  tags: tags as string[],
+  rating: rating as number,
+  year: year as number,
+  gradient: pick(gradients, i),
+  emoji: pick(emojis, i),
+}));
+
+export const books: Item[] = [
+  ["The Glass Atlas", "R. Okonkwo", ["Literary", "Mystery"], 4.5, 2022],
+  ["Saltwater Notes", "Ines Vidal", ["Memoir", "Essays"], 4.3, 2021],
+  ["Hollow Sky", "K. Saito", ["Sci-Fi", "Literary"], 4.7, 2023],
+  ["Bright River", "Mara Reyes", ["Literary", "Drama"], 4.4, 2020],
+  ["The Cobalt Door", "Nora Bloom", ["Mystery", "Thriller"], 4.2, 2024],
+  ["Quiet Engines", "Owen Reid", ["Nonfiction", "Science"], 4.5, 2022],
+  ["A Map for Returning", "Hana Suzuki", ["Memoir", "Travel"], 4.3, 2019],
+  ["Ironbark", "P. Larsen", ["Fantasy", "Adventure"], 4.6, 2023],
+  ["Marigold Season", "Renee Otieno", ["Romance", "Literary"], 4.1, 2021],
+  ["Salt & Iron", "Jude Park", ["Historical", "Drama"], 4.4, 2018],
+  ["Vesper Field", "Eloise Tang", ["Literary", "Mystery"], 4.6, 2023],
+  ["Northwind", "Karl Holm", ["Historical", "Adventure"], 4.2, 2020],
+  ["Echo Park Days", "Sofia Liu", ["Literary", "Coming of Age"], 3.9, 2019],
+  ["The Lantern Code", "M. Abebe", ["Thriller", "Mystery"], 4.5, 2024],
+  ["Polaris Notes", "Yara Khan", ["Sci-Fi", "Essays"], 4.8, 2024],
+  ["The Bee Keepers", "T. Ramos", ["Literary", "Family"], 4.0, 2022],
+  ["Sunday Drivers", "Kira Park", ["Romance", "Comedy"], 4.0, 2021],
+  ["Iron Garden", "Hugo Vey", ["Historical", "War"], 4.5, 2020],
+  ["Riverbed Stories", "Anita Cho", ["Short Stories", "Literary"], 4.2, 2023],
+  ["Phantom Frequency", "Leo Marks", ["Sci-Fi", "Horror"], 4.0, 2022],
+  ["The Bright Hour", "Eve Hwang", ["Memoir", "Health"], 4.3, 2018],
+  ["Trapezoid", "C. Becker", ["Thriller", "Crime"], 3.9, 2021],
+  ["Hollow Crown Pass", "F. Okafor", ["Fantasy", "Adventure"], 4.4, 2023],
+  ["Saltwater Kingdom", "Mira Vance", ["Fantasy", "YA"], 4.6, 2024],
+  ["Concrete Lullaby", "J. Ortiz", ["Crime", "Drama"], 4.1, 2020],
+  ["The Apiary", "Beatrice Sun", ["Nonfiction", "Nature"], 4.5, 2022],
+  ["Velvet Static", "Alec Roman", ["Sci-Fi", "Romance"], 4.0, 2024],
+  ["Midnight Trains", "Sami Yusuf", ["Mystery", "Literary"], 4.4, 2018],
+  ["The Open Door", "Pia Engel", ["Romance", "Literary"], 4.2, 2022],
+  ["Greenhouse", "Jules Marin", ["Comedy", "Essays"], 3.8, 2019],
+  ["Borealis", "K. Lindqvist", ["Sci-Fi", "Adventure"], 4.7, 2024],
+  ["Halfway House", "Tia Brooks", ["Drama", "Crime"], 4.0, 2021],
+  ["Honey & Smoke", "R. Bellini", ["Romance", "Literary"], 4.1, 2020],
+  ["Ironwood", "Ada Sterling", ["Fantasy", "Adventure"], 4.5, 2023],
+  ["Cinder Lines", "Mae Holt", ["Poetry"], 4.3, 2022],
+  ["Lighthouse 88", "Yann Petit", ["Literary", "Mystery"], 4.4, 2023],
+  ["Underglass", "Nia Park", ["Sci-Fi", "Literary"], 4.6, 2024],
+  ["Paper Boats", "S. Wei", ["Coming of Age"], 3.9, 2018],
+  ["Trace Elements", "Omar Diaz", ["Thriller", "Sci-Fi"], 4.2, 2022],
+  ["The Quiet Year", "L. Kovac", ["Historical", "War"], 4.5, 2021],
+  ["Slate", "B. Cohen", ["Crime", "Drama"], 4.0, 2020],
+  ["Solstice Run", "Riya Anand", ["Adventure", "YA"], 4.3, 2023],
+  ["The Long Dark", "F. Mendel", ["Horror", "Mystery"], 4.1, 2024],
+  ["After Glow", "Cleo Sant", ["Romance", "Poetry"], 4.4, 2022],
+  ["Hexagon", "M. Salah", ["Sci-Fi", "Thriller"], 4.2, 2023],
+  ["Wildflower County", "T. Brennan", ["Romance", "Family"], 4.3, 2021],
+  ["Open Sea", "I. Romero", ["Adventure", "Literary"], 4.5, 2024],
+  ["Field Notes", "B. Vance", ["Essays", "Nature"], 4.1, 2019],
+  ["Cathedral", "P. Sokolov", ["Literary", "Drama"], 4.6, 2017],
+  ["Bone Music", "T. Mensah", ["Historical", "Memoir"], 4.4, 2020],
+  ["The Tea Master", "K. Mori", ["Literary", "Romance"], 4.3, 2022],
+].map(([title, creator, tags, rating, year], i): Item => ({
+  id: `b-${i + 1}`,
+  domain: "books",
+  title: title as string,
+  creator: creator as string,
+  description: `A ${(tags as string[])[0].toLowerCase()} read by ${creator}. Recommended for fans of layered storytelling.`,
+  tags: tags as string[],
+  rating: rating as number,
+  year: year as number,
+  gradient: pick(gradients, i + 3),
+  emoji: pick(bookEmojis, i),
+}));
+
+export const products: Item[] = [
+  ["Aura Wireless Headphones", "Northwave", ["Audio", "Wireless"], 4.6, 249],
+  ["Lumen Desk Lamp", "Form Studio", ["Lighting", "Home"], 4.4, 89],
+  ["Halo Smartwatch", "Vesper", ["Wearable", "Fitness"], 4.3, 329],
+  ["Pebble Mechanical Keyboard", "Keycraft", ["Computing"], 4.7, 159],
+  ["Drift Lounge Chair", "Maison Park", ["Furniture", "Home"], 4.5, 749],
+  ["Echo Bluetooth Speaker", "Northwave", ["Audio", "Wireless"], 4.2, 119],
+  ["Trail Runner X2", "Strider", ["Footwear", "Fitness"], 4.4, 139],
+  ["Atlas Backpack 28L", "Field Co.", ["Travel", "Outdoor"], 4.5, 159],
+  ["Cinder Coffee Grinder", "Brew Lab", ["Kitchen"], 4.6, 219],
+  ["Nimbus Office Chair", "Form Studio", ["Furniture", "Office"], 4.3, 489],
+  ["Glow Smart Bulb 4-pack", "Lumen", ["Smart Home", "Lighting"], 4.1, 49],
+  ["Pulse Fitness Band", "Vesper", ["Wearable", "Fitness"], 4.0, 99],
+  ["Quill Stylus", "Inkwell", ["Computing", "Creative"], 4.4, 129],
+  ["Loom Throw Blanket", "Maison Park", ["Home", "Textiles"], 4.5, 89],
+  ["Forge Cast Iron Pan 10\"", "Brew Lab", ["Kitchen"], 4.7, 79],
+  ["Kite Drone Mini", "Skybound", ["Outdoor", "Tech"], 4.0, 299],
+  ["Tide Water Bottle 750ml", "Field Co.", ["Outdoor"], 4.6, 39],
+  ["Mesa Dining Table", "Maison Park", ["Furniture", "Home"], 4.4, 1299],
+  ["Pixel Action Camera 4K", "Skybound", ["Tech", "Outdoor"], 4.2, 379],
+  ["Ridge Hiking Boots", "Strider", ["Footwear", "Outdoor"], 4.5, 219],
+  ["Ember Candle Set", "Maison Park", ["Home", "Wellness"], 4.3, 45],
+  ["Vista Monitor Stand", "Form Studio", ["Office", "Computing"], 4.4, 79],
+  ["Tonal Headphones Pro", "Northwave", ["Audio", "Wireless"], 4.8, 449],
+  ["Brew Pour-Over Kit", "Brew Lab", ["Kitchen"], 4.5, 69],
+  ["Cove Bath Towel Set", "Maison Park", ["Home", "Textiles"], 4.2, 79],
+  ["Sprint Earbuds", "Northwave", ["Audio", "Fitness"], 4.1, 149],
+  ["Pace Running Shorts", "Strider", ["Apparel", "Fitness"], 4.3, 49],
+  ["Stash Travel Cube", "Field Co.", ["Travel"], 4.5, 35],
+  ["Beam Reading Light", "Lumen", ["Lighting", "Home"], 4.0, 39],
+  ["Loft Bedframe Queen", "Maison Park", ["Furniture", "Home"], 4.4, 899],
+  ["Crisp Linen Sheets", "Maison Park", ["Home", "Textiles"], 4.6, 159],
+  ["Forge Chef Knife 8\"", "Brew Lab", ["Kitchen"], 4.7, 129],
+  ["Mira Smart Mirror", "Vesper", ["Smart Home", "Wellness"], 4.0, 599],
+  ["Trail Vest 12L", "Field Co.", ["Outdoor", "Fitness"], 4.4, 89],
+  ["Pulse Heart Monitor", "Vesper", ["Wearable", "Fitness"], 4.2, 79],
+  ["Glide Standing Desk", "Form Studio", ["Furniture", "Office"], 4.5, 599],
+  ["Atlas Carry-On", "Field Co.", ["Travel"], 4.6, 329],
+  ["Pebble Mouse", "Keycraft", ["Computing"], 4.3, 89],
+  ["Halo Watch Band Leather", "Vesper", ["Wearable"], 4.1, 39],
+  ["Loom Rug 5x8", "Maison Park", ["Home", "Textiles"], 4.4, 299],
+  ["Spark Power Bank 20k", "Northwave", ["Tech", "Travel"], 4.5, 69],
+  ["Bloom Diffuser", "Maison Park", ["Wellness", "Home"], 4.0, 59],
+  ["Drift Throw Pillow", "Maison Park", ["Home", "Textiles"], 4.1, 35],
+  ["Trail Tent 2P", "Field Co.", ["Outdoor"], 4.5, 349],
+  ["Crisp Apron", "Brew Lab", ["Kitchen", "Apparel"], 4.2, 45],
+  ["Pixel Webcam HD", "Inkwell", ["Computing"], 4.1, 99],
+  ["Ridge Wool Socks", "Strider", ["Apparel", "Outdoor"], 4.6, 19],
+  ["Cinder Espresso Machine", "Brew Lab", ["Kitchen"], 4.7, 899],
+  ["Nimbus Footrest", "Form Studio", ["Office"], 4.0, 59],
+  ["Mira Sleep Tracker", "Vesper", ["Wellness", "Wearable"], 4.2, 129],
+].map(([title, creator, tags, rating, price], i): Item => ({
+  id: `p-${i + 1}`,
+  domain: "products",
+  title: title as string,
+  creator: creator as string,
+  description: `${title} by ${creator}. Designed with care, built for everyday use.`,
+  tags: tags as string[],
+  rating: rating as number,
+  price: price as number,
+  gradient: pick(gradients, i + 6),
+  emoji: pick(productEmojis, i),
+}));
+
+export const dataset: Record<Domain, Item[]> = {
+  movies,
+  books,
+  products,
+};
+
+export const allTags = (domain: Domain): string[] => {
+  const set = new Set<string>();
+  dataset[domain].forEach((it) => it.tags.forEach((t) => set.add(t)));
+  return Array.from(set).sort();
+};
